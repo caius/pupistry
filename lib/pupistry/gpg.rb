@@ -42,7 +42,7 @@ module Pupistry
 
       Dir.chdir("#{$config['general']['app_cache']}/artifacts/") do
         # Generate the signature file and pick up the signature data
-        unless system "gpg --use-agent --detach-sign artifact.#{@checksum}.tar.gz"
+        unless system "gpg --use-agent --local-user '#{$config['general']['gpg_signing_key']}' --detach-sign artifact.#{@checksum}.tar.gz"
           $logger.error 'Unable to sign the artifact, an unexpected failure occured. No file uploaded.'
           return false
         end
@@ -173,6 +173,11 @@ module Pupistry
     # Check if the public key is installed on this machine?
     #
     def pubkey_exist?
+      # When configured not to manage the public key, we just presume it always exists
+      if $config['general']['gpg_manage_pubkey'] == false
+        return true
+      end
+
       # We prefix with 0x to avoid matching on strings in key names
       if system "gpg --status-fd a --list-keys 0x#{$config['general']['gpg_signing_key']} 2>&1 >> /dev/null"
         $logger.debug 'Public key exists on this system'
