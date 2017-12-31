@@ -97,7 +97,7 @@ module Pupistry
 
         # Was it valid?
         output_verify.each_line do |line|
-          if /\[GNUPG:\]\sGOODSIG\s[A-Z0-9]*#{$config["general"]["gpg_signing_key"]}\s/.match(line)
+          if /\[GNUPG:\]\sGOODSIG\s[A-Z0-9]*\s?#{$config["general"]["gpg_signing_key"]}\s/.match(line)
             $logger.info "Artifact #{@checksum} has a valid signature belonging to #{$config['general']['gpg_signing_key']}"
             return true
           end
