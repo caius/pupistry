@@ -42,7 +42,7 @@ module Pupistry
 
       Dir.chdir("#{$config['general']['app_cache']}/artifacts/") do
         # Generate the signature file and pick up the signature data
-        unless system "gpg --use-agent --detach-sign artifact.#{@checksum}.tar.gz"
+        unless system "gpg --use-agent --local-user '#{$config['general']['gpg_signing_key']}' --detach-sign artifact.#{@checksum}.tar.gz"
           $logger.error 'Unable to sign the artifact, an unexpected failure occured. No file uploaded.'
           return false
         end
