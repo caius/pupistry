@@ -34,6 +34,8 @@ general:
   # malicious puppet manifests to your servers
   gpg_disable: true
   gpg_signing_key: XXXXXX
+  # Whether to install public key if missing from keychain or not
+  gpg_manage_pubkey: true
 
 
 # Settings for agents, these are required on the machines that will be
